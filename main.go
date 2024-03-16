@@ -2,18 +2,15 @@ package main
 
 import "fmt"
 
-type Point struct {
-	X, Y int
-}
-
 func main() {
-	pointsMap := map[string]Point{}
-	otherPointsMap := make(map[string]Point)
-	//var oneMorePointsMap map[string]Point
-	pointsMap["a"] = Point{X: 1, Y: 2}
-	otherPointsMap["a"] = Point{1, 2}
-	fmt.Println(pointsMap)
-	fmt.Println(otherPointsMap)
-	fmt.Println(pointsMap["a"])
-	fmt.Println(otherPointsMap["a"])
+	var grad, hour, minutes, indexHour, indexMinutes, i uint16
+	indexHour = 360 / 12
+	indexMinutes = 12 * 60 / 360
+	fmt.Scan(&grad)
+	if grad <= 360 {
+		hour = grad / indexHour
+		i = grad - hour*indexHour
+		minutes = i * indexMinutes
+		fmt.Println("It is", hour, "hours", minutes, "minutes.")
+	}
 }
