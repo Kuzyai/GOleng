@@ -2,25 +2,38 @@ package main
 
 import "fmt"
 
-func main() {
-	var workArray [10]byte
-	for i := 0; i < len(workArray); i++ {
-		fmt.Scan(&workArray[i])
-	}
-	var arr [3][2]byte
-	for i := 0; i < len(arr); i++ {
-		for j := 0; j < len(arr[i]); j++ {
-			fmt.Scan(&arr[i][j])
+type Text struct {
+	On          bool
+	Ammo, Power int
+}
+
+func (t *Text) Shoot() bool {
+	if t.On == false {
+		return false
+	} else {
+		if t.Ammo > 0 {
+			t.Ammo--
+			return true
+		} else {
+			return false
 		}
 	}
-	var change byte
-	for i := 0; i < len(arr); i++ {
-		change = workArray[arr[i][0]]
-		workArray[arr[i][0]] = workArray[arr[i][1]]
-		workArray[arr[i][1]] = change
+}
+func (t *Text) RideBike() bool {
+	if t.On == false {
+		return false
+	} else {
+		if t.Power > 0 {
+			t.Power--
+			return true
+		} else {
+			return false
+		}
 	}
-	for i := range workArray {
-		fmt.Printf("%d ", workArray[i])
-	}
-	fmt.Printf("%T", workArray)
+}
+func main() {
+	testStruct := new(Text)
+	fmt.Scan(&testStruct.On, &testStruct.Ammo, &testStruct.Power)
+	fmt.Println(testStruct.Shoot())
+	fmt.Println(testStruct.RideBike())
 }
