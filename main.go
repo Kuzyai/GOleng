@@ -1,39 +1,31 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"math"
+)
 
-type Text struct {
-	On          bool
-	Ammo, Power int
+type S struct {
+	n, k, p, v, m, w, t float64
 }
 
-func (t *Text) Shoot() bool {
-	if t.On == false {
-		return false
-	} else {
-		if t.Ammo > 0 {
-			t.Ammo--
-			return true
-		} else {
-			return false
-		}
-	}
-}
-func (t *Text) RideBike() bool {
-	if t.On == false {
-		return false
-	} else {
-		if t.Power > 0 {
-			t.Power--
-			return true
-		} else {
-			return false
-		}
-	}
-}
 func main() {
-	testStruct := new(Text)
-	fmt.Scan(&testStruct.On, &testStruct.Ammo, &testStruct.Power)
-	fmt.Println(testStruct.Shoot())
-	fmt.Println(testStruct.RideBike())
+	ex := &S{}
+	fmt.Scan(&ex.k, &ex.p, &ex.v, &ex.n)
+	ex.M()
+	ex.W()
+	ex.T()
+	fmt.Println(ex.t)
+}
+
+func (s *S) M() {
+	s.m = s.v * s.p
+}
+
+func (s *S) W() {
+	s.w = math.Sqrt(s.k / s.m)
+}
+
+func (s *S) T() {
+	s.t = s.n / s.w
 }
