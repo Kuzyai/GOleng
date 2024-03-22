@@ -1,31 +1,27 @@
 package main
 
-import (
-	"fmt"
-	"math"
-)
-
-type S struct {
-	n, k, p, v, m, w, t float64
-}
+import "fmt"
 
 func main() {
-	ex := &S{}
-	fmt.Scan(&ex.k, &ex.p, &ex.v, &ex.n)
-	ex.M()
-	ex.W()
-	ex.T()
-	fmt.Println(ex.t)
-}
-
-func (s *S) M() {
-	s.m = s.v * s.p
-}
-
-func (s *S) W() {
-	s.w = math.Sqrt(s.k / s.m)
-}
-
-func (s *S) T() {
-	s.t = s.n / s.w
+	cityPopulation := map[string]int{
+		"Ryazan":     528,
+		"Novouralsk": 78,
+		"Tomsk":      556,
+		"Kemerovo":   557,
+	} //город: население города в тысячах человек,
+	groupCity := map[int][]string{
+		10:   {"Kuznetsk", "Bor", "Novouralsk"},             // города с населением 10-99 тыс. человек
+		100:  {"Ryazan", "Tomsk", "Kemerovo"},               // города с населением 100-999 тыс. человек
+		1000: {"Moscow", "Saint Petersburg", "Novosibirsk"}, // города с населением 1000 тыс. человек и более
+	}
+	for key, _ := range cityPopulation {
+		for key1, value1 := range groupCity {
+			for _, i := range value1 {
+				if key == i && key1 != 100 {
+					delete(cityPopulation, key)
+				}
+			}
+		}
+	}
+	fmt.Println(cityPopulation)
 }
