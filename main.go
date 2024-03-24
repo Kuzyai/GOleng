@@ -1,70 +1,59 @@
 package main
 
 import (
-	"bufio"
+	"errors"
 	"fmt"
-	"os"
-	"strconv"
-	"strings"
 )
 
+type myCalc interface {
+	add(float64, float64)
+	subtract(float64, float64)
+	multi(float64, float64)
+	div(float64, float64)
+}
+type Calc struct {
+	myCalc
+	num1 float64
+	num2 float64
+}
+
+type Operator string
+
+func (o Operator) add(a, b float64) {
+	fmt.Println(a + b)
+}
+func (o Operator) subtract(a, b float64) {
+	fmt.Println(a - b)
+}
+func (o Operator) multi(a, b float64) {
+	fmt.Println(a * b)
+}
+func (o Operator) div(a, b float64) {
+	fmt.Println(a / b)
+}
 func main() {
-	var result float64
-	value1, value2, operation := readTask()
-	a, err := doFloat(value1)
+	var a, b float64
+	var op string
+	_, err := fmt.Scan(&a, &op, &b)
 	if err != nil {
-		fmt.Println(err)
-		return
+		panic(errors.New("Введены не верные значения!"))
 	}
-	b, err := doFloat(value2)
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-	operation, err = doSign(operation)
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-	switch operation {
+	o := Operator(op)
+	c := Calc{myCalc: o, num1: a, num2: b}
+	switch o {
 	case "+":
-		result = func(v1, v2 float64) float64 { return v1 + v2 }(a, b)
+		c.add(c.num1, c.num2)
 	case "-":
-		result = func(v1, v2 float64) float64 { return v1 - v2 }(a, b)
+		c.subtract(c.num1, c.num2)
 	case "*":
-		result = func(v1, v2 float64) float64 { return v1 * v2 }(a, b)
+		c.multi(c.num1, c.num2)
 	case "/":
-		result = func(v1, v2 float64) float64 { return v1 / v2 }(a, b)
-	}
-	fmt.Printf("%.4f", result)
-}
-func readTask() (interface{}, interface{}, interface{}) {
-	var value1, value2, operation interface{}
-	r := bufio.NewReader(os.Stdin)
-	value1, _ = r.ReadString('\n')
-	value2, _ = r.ReadString('\n')
-	operation, _ = r.ReadString('\n')
-	return value1, value2, operation
-}
-func doSign(i interface{}) (string, error) {
-	if v, ok := i.(string); ok {
-		v = strings.Trim(v, "\n")
-		if v == "+" || v == "-" || v == "*" || v == "/" {
-			return v, nil
+		if c.num2 == 0 {
+			panic(errors.New("Нельзя делить на 0"))
 		}
-		return "", fmt.Errorf("неизвестная операция")
+		c.div(c.num1, c.num2)
+	default:
+		panic(errors.New("Введите правильный оператор"))
+
 	}
-	return "", fmt.Errorf("неизвестная операция")
-}
-func doFloat(i interface{}) (float64, error) {
-	var s string
-	if v, ok := i.(string); ok {
-		s = v
-	}
-	s = strings.Trim(s, "\n")
-	n, err := strconv.ParseFloat(s, 64)
-	if err != nil {
-		return 0, fmt.Errorf("value = %v: %T", n, n)
-	}
-	return n, nil
 }
